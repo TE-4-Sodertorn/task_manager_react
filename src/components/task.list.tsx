@@ -1,4 +1,4 @@
-import { useTaskContext } from "../context/task.context";
+import { useTaskContext } from "../hooks/use.task";
 import TaskItem from "./task.item";
 
 const TaskList = () => {
