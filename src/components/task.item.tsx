@@ -1,4 +1,4 @@
-import { useTaskContext } from "../context/task.context";
+import { useTaskContext } from "../hooks/use.task";
 import type { Task } from "../types";
 
 const TaskItem = ({ id, title, description, completed }: Task) => {
@@ -22,7 +22,9 @@ const TaskItem = ({ id, title, description, completed }: Task) => {
       </label>
       <div className="task-item__actions">
         <span className="task-item__status">{completed ? "Done" : "Pending"}</span>
-        <button type="button" onClick={removeTask}>
+        <button
+          type="button"
+          onClick={removeTask}>
           Remove
         </button>
       </div>

@@ -1,6 +1,6 @@
 import type { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
-import { useTaskContext } from "../context/task.context";
+import { useTaskContext } from "../hooks/use.task";
 import type { TaskDraft } from "../types";
 
 const TaskInput = () => {
@@ -42,7 +42,9 @@ const TaskInput = () => {
   };
 
   return (
-    <form className="task-form" onSubmit={handleSubmit}>
+    <form
+      className="task-form"
+      onSubmit={handleSubmit}>
       <div>
         <label htmlFor="title">Title</label>
         <input
