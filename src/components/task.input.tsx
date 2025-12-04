@@ -1,29 +1,39 @@
-import React, { useContext, useState } from "react";
-import TaskContext from "../context/task.context";
-import type { Task, TaskContextType } from "../types";
+import type { ChangeEvent, FormEvent } from "react";
+import { useState } from "react";
+import { useTaskContext } from "../context/task.context";
+import type { TaskDraft } from "../types";
 
 const TaskInput = () => {
-  const { dispatch } = useContext<TaskContextType>(TaskContext);
-  const [task, setTask] = useState<Task>({
-    id: "",
+  const { dispatch } = useTaskContext();
+  const [task, setTask] = useState<TaskDraft>({
     completed: false,
     description: "",
     title: "",
   });
 
-  console.log(task);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    const field = name as "title" | "description";
     setTask((prevTask) => ({
       ...prevTask,
-      [id]: value,
+      [field]: value,
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    dispatch({ type: "ADD", payload: task });
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!task.title.trim()) {
+      return;
+    }
+
+    dispatch({
+      type: "ADD",
+      payload: {
+        ...task,
+        title: task.title.trim(),
+        description: task.description.trim(),
+      },
+    });
     setTask({
       completed: false,
       description: "",
@@ -32,22 +42,31 @@ const TaskInput = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="title">Title</label>
-      <input
-        type="text"
-        id="title"
-        value={task.title}
-        onChange={handleChange}
-      />
+    <form className="task-form" onSubmit={handleSubmit}>
+      <div>
+        <label htmlFor="title">Title</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          placeholder="Enter a task title"
+          value={task.title}
+          onChange={handleChange}
+          required
+        />
+      </div>
 
-      <label htmlFor="description">Description</label>
-      <input
-        type="text"
-        id="description"
-        value={task.description}
-        onChange={handleChange}
-      />
+      <div>
+        <label htmlFor="description">Description</label>
+        <input
+          type="text"
+          id="description"
+          name="description"
+          placeholder="Add a bit more detail"
+          value={task.description}
+          onChange={handleChange}
+        />
+      </div>
       <button type="submit">Add Task</button>
     </form>
   );

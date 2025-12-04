@@ -1,26 +1,20 @@
-import { useReducer } from "react";
 import "./App.css";
 import TaskInput from "./components/task.input";
 import TaskList from "./components/task.list";
-import TaskContext from "./context/task.context";
-import { TaskReducer } from "./reducers/task.reducer";
-import type { TaskState } from "./types";
-
-const initialTasks: TaskState = [];
+import { TaskProvider } from "./context/task.context";
 
 function App() {
-  const [tasks, dispatch] = useReducer(TaskReducer, initialTasks);
-  console.log(tasks);
   return (
-    <TaskContext.Provider value={{ tasks, dispatch }}>
-      <div>
-        <h1>Task manager</h1>
-        <hr />
+    <TaskProvider>
+      <main className="app">
+        <header className="app__header">
+          <h1>Task manager</h1>
+          <p>Shared state handled with React context + reducer.</p>
+        </header>
         <TaskInput />
-        <hr />
         <TaskList />
-      </div>
-    </TaskContext.Provider>
+      </main>
+    </TaskProvider>
   );
 }
 

@@ -1,12 +1,15 @@
-import { useContext } from "react";
-import TaskContext from "../context/task.context";
-import type { TaskContextType } from "../types";
+import { useTaskContext } from "../context/task.context";
 import TaskItem from "./task.item";
 
 const TaskList = () => {
-  const { tasks } = useContext<TaskContextType>(TaskContext);
+  const { tasks } = useTaskContext();
+
+  if (!tasks.length) {
+    return <p className="empty-state">No tasks yet. Add your first task above.</p>;
+  }
+
   return (
-    <ul>
+    <ul className="task-list">
       {tasks.map((task) => (
         <TaskItem
           key={task.id}
